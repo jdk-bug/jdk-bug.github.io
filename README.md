@@ -53,10 +53,6 @@ Edit `index.html` directly — the entire site is a single HTML file with embedd
 | Safari | ✅ Full |
 | Mobile browsers | ✅ Full |
 
-## 🔗 Related Projects
-
-- [my-first-project](https://github.com/jdk-bug/my-first-project) — Starter project with Bun stack
-
 ## 📄 License
 
 This project is open source — feel free to fork and adapt for your own GitHub Pages site!
