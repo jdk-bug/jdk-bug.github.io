@@ -256,6 +256,40 @@
             color: var(--text-secondary);
             font-size: 0.95rem;
             margin-bottom: 1rem;
+
+        .project-card .repo-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .project-card .repo-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .project-card .language-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .project-loading p,
+        .project-error p {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .project-error {
+            grid-column: 1 / -1;
+        }
         }
 
         .links {
@@ -365,17 +399,10 @@
                     </div>
                 </div>
 
-                <h2 class="section-title">Featured Projects</h2>
-                <div class="project-grid">
-                    <div class="project-card">
-                        <h3>🏠 GitHub Pages</h3>
-                        <p>This homepage - built with modern HTML/CSS and hosted on GitHub Pages.</p>
-                        <a href="https://github.com/jdk-bug/jdk-bug.github.io" class="link-button">View Source →</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>🌟 Open Source</h3>
-                        <p>Check out my public repositories and contributions to the open source community.</p>
-                        <a href="https://github.com/jdk-bug?tab=repositories" class="link-button">View Projects →</a>
+                <h2 class="section-title">Projects</h2>
+                <div id="projects-container" class="project-grid">
+                    <div class="project-card project-loading">
+                        <p>Loading projects…</p>
                     </div>
                 </div>
 
@@ -447,5 +474,35 @@
             });
         });
     </script>
+        <script>
+            (function() {
+                var c = document.getElementById("projects-container");
+                var key = "jdkbug_projects_cache";
+                var duration = 300000;
+                function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+                function render(repos) {
+                    if (!repos || !repos.length) { c.innerHTML = "<div class=project-card><p>No public repositories found</p></div>"; return; }
+                    var filtered = repos.filter(function(r){ return !r.fork && !r.archived; });
+                    if (!filtered.length) { c.innerHTML = "<div class=project-card><p>No public repositories</p></div>"; return; }
+                    filtered.sort(function(a,b){ return b.stargazers_count - a.stargazers_count; });
+                    var html = filtered.slice(0,6).map(function(r) {
+                        var lang = r.language ? "<span><span class=language-dot style=background-color:" + (r.color||"868e96") + "></span>" + esc(r.language) + "</span>" : "";
+                        return "<div class=project-card><h3>" + esc(r.name) + "</h3><p>" + esc(r.description||"No description") + "</p><div class=repo-meta>" + lang + "<span>" + r.stargazers_count + " stars</span><span>" + r.forks_count + " forks</span></div><a href=" + r.html_url + " class=link-button target=_blank rel=noopener>View on GitHub</a></div>";
+                    }).join("");
+                    c.innerHTML = html;
+                }
+                try {
+                    var cached = localStorage.getItem(key);
+                    if (cached) {
+                        var parsed = JSON.parse(cached);
+                        if (Date.now() - parsed.timestamp < duration) { render(parsed.data); return; }
+                    }
+                } catch(e) {}
+                fetch("https://api.github.com/users/jdk-bug/repos?sort=updated&per_page=100").then(function(r){ return r.json(); }).then(function(data){
+                    try { localStorage.setItem(key, JSON.stringify({timestamp:Date.now(),data:data})); } catch(e) {}
+                    render(data);
+                }).catch(function(){ c.innerHTML = "<div class=project-card><p>Failed to load projects</p></div>"; });
+            })();
+        </script>
 </body>
 </html>
