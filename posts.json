@@ -4,5 +4,11 @@
     "title": "Welcome to the Blog",
     "date": "2026-05-18",
     "tags": ["announcement", "meta"]
+  },
+  {
+    "slug": "getting-started-with-the-skateboard-game",
+    "title": "Getting Started with the HTML5 Skateboard Game",
+    "date": "2026-05-19",
+    "tags": ["project", "game", "html5"]
   }
 ]
