@@ -37,6 +37,7 @@
         .post-meta { color: #718096; font-size: 0.9rem; margin-bottom: 1rem; }
         .post-content { color: #4a5568; line-height: 1.8; }
         .no-posts { text-align: center; padding: 3rem; color: #718096; }
+        .loading { text-align: center; padding: 3rem; color: #667eea; font-style: italic; }
     </style>
 </head>
 <body>
@@ -44,38 +45,126 @@
         <a href="index.html" class="back-link">← Back to Home</a>
         <h1>Blog</h1>
         <div id="blog-posts">
-            <div class="no-posts">Loading posts...</div>
+            <div class="loading">Loading posts...</div>
         </div>
     </div>
 
+    <!-- Include marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+        // Parse YAML frontmatter from Markdown content
+        function parseFrontmatter(content) {
+            const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+            const match = content.match(frontmatterRegex);
+            
+            if (match) {
+                const frontmatterText = match[1];
+                const markdownContent = match[2];
+                
+                // Simple YAML parsing for our use case (title, date, tags)
+                const frontmatter = {};
+                frontmatterText.split('\n').forEach(line => {
+                    const [key, ...valueParts] = line.split(':');
+                    if (key && valueParts.length > 0) {
+                        const value = valueParts.join(':').trim();
+                        // Remove quotes if present
+                        const cleanedValue = value.replace(/^["']|["']$/g, '');
+                        frontmatter[key.trim()] = cleanedValue;
+                    }
+                });
+                
+                return {
+                    frontmatter: frontmatter,
+                    content: markdownContent.trim()
+                };
+            }
+            
+            // No frontmatter
+            return {
+                frontmatter: {},
+                content: content.trim()
+            };
+        }
+        
         async function loadBlogPosts() {
             try {
                 const response = await fetch('posts.json');
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 const posts = await response.json();
                 const container = document.getElementById('blog-posts');
+                
                 if (!posts || posts.length === 0) {
                     container.innerHTML = '<div class="no-posts">No posts yet. Check back soon!</div>';
                     return;
                 }
-                container.innerHTML = posts.map(function(post) {
+                
+                // Load each post
+                const postPromises = posts.map(async (post) => {
+                    try {
+                        const postResponse = await fetch(`posts/${post.slug}.md`);
+                        if (!postResponse.ok) throw new Error(`Failed to load ${post.slug}.md`);
+                        const postContent = await postResponse.text();
+                        
+                        // Parse frontmatter and content
+                        const { frontmatter, content } = parseFrontmatter(postContent);
+                        
+                        // Merge frontmatter with post metadata from index
+                        const postData = {
+                            ...post,
+                            ...frontmatter,
+                            content: content
+                        };
+                        
+                        return postData;
+                    } catch (err) {
+                        console.error(`Error loading post ${post.slug}:`, err);
+                        return null;
+                    }
+                });
+                
+                const postDataArray = await Promise.all(postPromises);
+                const validPosts = postDataArray.filter(post => post !== null);
+                
+                if (validPosts.length === 0) {
+                    container.innerHTML = '<div class="no-posts">No posts available.</div>';
+                    return;
+                }
+                
+                // Sort by date (newest first)
+                validPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                container.innerHTML = validPosts.map(function(post) {
+                    // Parse Markdown to HTML
+                    const htmlContent = marked.parse(post.content);
+                    
                     return '<article class="post">' +
                         '<h2>' + escapeHtml(post.title) + '</h2>' +
-                        '<div class="post-meta"><time datetime="' + post.date + '">' + new Date(post.date).toLocaleDateString() + '</time></div>' +
-                        '<div class="post-content">' + escapeHtml(post.content).replace(/\n/g, '<br>') + '</div>' +
+                        '<div class="post-meta">' +
+                            '<time datetime="' + post.date + '">' + 
+                                new Date(post.date).toLocaleDateString() + 
+                            '</time>' +
+                            (post.tags && Array.isArray(post.tags) && post.tags.length > 0 ? 
+                                ' <span class="tags">' + 
+                                    post.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join(' ') +
+                                '</span>' : ''
+                            ) +
+                        '</div>' +
+                        '<div class="post-content">' + htmlContent + '</div>' +
                     '</article>';
                 }).join('');
+                
             } catch (err) {
                 console.error('Error loading blog posts:', err);
                 document.getElementById('blog-posts').innerHTML =
                     '<div class="no-posts">Error loading posts. Please try again later.</div>';
             }
         }
+        
         function escapeHtml(text) {
             var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
+        
         document.addEventListener('DOMContentLoaded', loadBlogPosts);
     </script>
 </body>
