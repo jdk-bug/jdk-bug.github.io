@@ -1,0 +1,10 @@
+[
+  {
+    "slug": "welcome",
+    "file": "posts/welcome.md"
+  },
+  {
+    "slug": "building-with-markdown",
+    "file": "posts/building-with-markdown.md"
+  }
+]
