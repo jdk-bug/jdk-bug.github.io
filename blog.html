@@ -12,8 +12,8 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             line-height: 1.6;
-            color: #2d3748;
-            background: #f7fafc;
+            color: var(--text-primary);
+            background: var(--bg-body);
             min-height: 100vh;
         }
         .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
@@ -25,18 +25,18 @@
             font-weight: 500;
         }
         .back-link:hover { text-decoration: underline; }
-        h1 { font-size: 2.5rem; margin-bottom: 2rem; color: #2d3748; }
+        h1 { font-size: 2.5rem; margin-bottom: 2rem; color: var(--text-primary); }
         .post {
-            background: white;
+            background: var(--bg-card);
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px var(--shadow);
         }
-        .post h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #2d3748; }
-        .post-meta { color: #718096; font-size: 0.9rem; margin-bottom: 1rem; }
-        .post-content { color: #4a5568; line-height: 1.8; }
-        .no-posts { text-align: center; padding: 3rem; color: #718096; }
+        .post h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .post-meta { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+        .post-content { color: var(--text-secondary); line-height: 1.8; }
+        .no-posts { text-align: center; padding: 3rem; color: var(--text-secondary); }
     </style>
 </head>
 <body>
@@ -48,6 +48,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         async function loadBlogPosts() {
             try {
@@ -59,23 +60,90 @@
                     container.innerHTML = '<div class="no-posts">No posts yet. Check back soon!</div>';
                     return;
                 }
-                container.innerHTML = posts.map(function(post) {
-                    return '<article class="post">' +
-                        '<h2>' + escapeHtml(post.title) + '</h2>' +
-                        '<div class="post-meta"><time datetime="' + post.date + '">' + new Date(post.date).toLocaleDateString() + '</time></div>' +
-                        '<div class="post-content">' + escapeHtml(post.content).replace(/\n/g, '<br>') + '</div>' +
-                    '</article>';
-                }).join('');
+                
+                // Fetch and render each post
+                for (const post of posts) {
+                    try {
+                        const postResponse = await fetch(post.file);
+                        if (!postResponse.ok) throw new Error('Failed to fetch post: ' + post.file);
+                        const markdownContent = await postResponse.text();
+                        
+                        // Parse frontmatter
+                        let content = markdownContent;
+                        let frontmatter = {};
+                        const frontmatterMatch = markdownContent.match(/^---\n([\s\S]*?)\n---/);
+                        if (frontmatterMatch) {
+                            const yamlText = frontmatterMatch[1];
+                            // Simple YAML parsing for our needs (title, date, tags)
+                            yamlText.split('\n').forEach(line => {
+                                const match = line.match(/^(\w+):\s*(.+)$/);
+                                if (match) {
+                                    let key = match[1];
+                                    let value = match[2].trim();
+                                    // Remove quotes if present
+                                    if (value.startsWith('"') && value.endsWith('"')) {
+                                        value = value.slice(1, -1);
+                                    } else if (value.startsWith("'") && value.endsWith("'")) {
+                                        value = value.slice(1, -1);
+                                    }
+                                    // Handle arrays like tags: [announcement, meta]
+                                    if (value.startsWith('[') && value.endsWith(']')) {
+                                        value = value.slice(1, -1).split(',').map(item => item.trim().replace(/^["']|['"]$/g, ''));
+                                    }
+                                    frontmatter[key] = value;
+                                }
+                            });
+                            // Remove frontmatter from content
+                            content = markdownContent.replace(/^---\n[\s\S]*?\n---/, '').trim();
+                        }
+                        
+                        // Set defaults
+                        frontmatter.title = frontmatter.title || 'Untitled';
+                        frontmatter.date = frontmatter.date || '';
+                        frontmatter.tags = frontmatter.tags || [];
+                        
+                        // Render markdown to HTML
+                        const htmlContent = marked.parse(content);
+                        
+                        const postElement = document.createElement('article');
+                        postElement.className = 'post';
+                        postElement.innerHTML = `
+                            <h2>${escapeHtml(frontmatter.title)}</h2>
+                            <div class="post-meta">
+                                <time datetime="${frontmatter.date}">${new Date(frontmatter.date).toLocaleDateString()}</time>
+                                ${frontmatter.tags.length > 0 ? `
+                                    <span class="tags">
+                                        ${frontmatter.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+                                    </span>
+                                ` : ''}
+                            </div>
+                            <div class="post-content">
+                                ${htmlContent}
+                            </div>
+                        `;
+                        container.appendChild(postElement);
+                    } catch (err) {
+                        console.error('Error loading post:', err);
+                    }
+                }
             } catch (err) {
                 console.error('Error loading blog posts:', err);
                 document.getElementById('blog-posts').innerHTML =
                     '<div class="no-posts">Error loading posts. Please try again later.</div>';
             }
         }
+        
         function escapeHtml(text) {
-            var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
         }
+        
         document.addEventListener('DOMContentLoaded', loadBlogPosts);
     </script>
 </body>
