@@ -1,8 +1,10 @@
 [
   {
-    "title": "Welcome to the Blog",
-    "date": "2026-05-18",
     "slug": "welcome",
-    "content": "This is the first post on the new blog section of the jdk-bug homepage. The blog is built with vanilla JavaScript and reads posts from a JSON file — no build tools required. Future posts will cover project updates, technical notes, and open source work."
+    "file": "posts/welcome.md"
+  },
+  {
+    "slug": "getting-started",
+    "file": "posts/getting-started.md"
   }
 ]
