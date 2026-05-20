@@ -406,6 +406,13 @@
                     </div>
                 </div>
 
+
+                <h2 class="section-title">Blog Posts</h2>
+                <div id="blog-preview" class="project-grid">
+                    <div class="project-card project-loading">
+                        <p>Loading posts...</p>
+                    </div>
+                </div>
                 <div class="links">
                     <a href="https://github.com/jdk-bug" class="link-button">
                         <span>📦 GitHub Profile</span>
@@ -504,5 +511,18 @@
                 }).catch(function(){ c.innerHTML = "<div class=project-card><p>Failed to load projects</p></div>"; });
             })();
         </script>
+
+    <script>
+        (function() {
+            var container = document.getElementById("blog-preview");
+            function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+            fetch("posts.json").then(function(r){ return r.json(); }).then(function(posts){
+                if (!posts || !posts.length) { container.innerHTML = "<div class=project-card><p>No posts yet</p></div>"; return; }
+                container.innerHTML = posts.map(function(post) {
+                    return "<div class=project-card><h3>" + esc(post.file.replace("posts/","").replace(".md","").replace(/-/g," ")) + "</h3><a href=blog.html class=link-button>Read More →</a></div>";
+                }).join("");
+            }).catch(function(){ container.innerHTML = "<div class=project-card><p>Failed to load posts</p></div>"; });
+        })();
+    </script>
 </body>
 </html>
