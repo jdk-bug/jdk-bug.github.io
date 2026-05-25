@@ -12,34 +12,94 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             line-height: 1.6;
-            color: #2d3748;
-            background: #f7fafc;
+            color: var(--text-primary);
+            background: var(--bg-body);
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --bg-card: white;
+            --bg-body: #f7fafc;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border: #e2e8f0;
+        }
+        [data-theme="dark"] {
+            --primary: #90cdf4;
+            --primary-dark: #63b3ed;
+            --secondary: #b794f4;
+            --bg-gradient: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --bg-card: #2d3748;
+            --bg-body: #1a202c;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --border: #4a5568;
+        }
+        [data-theme="vaporwave"] {
+            --primary: #ff71ce;
+            --primary-dark: #ff47b8;
+            --secondary: #01cdfe;
+            --bg-gradient: linear-gradient(135deg, #1a0033 0%, #2d1b69 50%, #1a0033 100%);
+            --text-primary: #e0d4ff;
+            --text-secondary: #a78bfa;
+            --bg-card: #2a1050;
+            --bg-body: #1a0033;
+            --shadow: rgba(255, 113, 206, 0.15);
+            --border: #6d28d9;
         }
         .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
         .back-link {
             display: inline-block;
             margin-bottom: 2rem;
-            color: #667eea;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
         }
         .back-link:hover { text-decoration: underline; }
-        h1 { font-size: 2.5rem; margin-bottom: 2rem; color: #2d3748; }
+        h1 { font-size: 2.5rem; margin-bottom: 2rem; color: var(--text-primary); }
         .post {
-            background: white;
+            background: var(--bg-card);
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px var(--shadow);
         }
-        .post h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #2d3748; }
-        .post-meta { color: #718096; font-size: 0.9rem; margin-bottom: 1rem; }
-        .post-content { color: #4a5568; line-height: 1.8; }
-        .no-posts { text-align: center; padding: 3rem; color: #718096; }
+        .post h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .post-meta { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+        .post-content { color: var(--text-secondary); line-height: 1.8; }
+        .no-posts { text-align: center; padding: 3rem; color: var(--text-secondary); }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
     <div class="container">
         <a href="index.html" class="back-link">← Back to Home</a>
         <h1>Blog</h1>
@@ -77,6 +137,24 @@
             var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
             return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
+        // Theme toggle functionality
+        var themeToggle = document.getElementById('themeToggle');
+        var themes = ['light', 'dark', 'vaporwave'];
+        var themeEmojis = { light: '🌙', dark: '☀️', vaporwave: '🌴' };
+        var savedTheme = localStorage.getItem('theme');
+        var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+        if (!themes.includes(currentTheme)) currentTheme = 'light';
+        document.body.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = themeEmojis[currentTheme];
+        themeToggle.addEventListener('click', function() {
+            var currentIndex = themes.indexOf(document.body.getAttribute('data-theme') || 'light');
+            var nextIndex = (currentIndex + 1) % themes.length;
+            var nextTheme = themes[nextIndex];
+            document.body.setAttribute('data-theme', nextTheme);
+            themeToggle.textContent = themeEmojis[nextTheme];
+            localStorage.setItem('theme', nextTheme);
+        });
         document.addEventListener('DOMContentLoaded', loadBlogPosts);
     </script>
 </body>
