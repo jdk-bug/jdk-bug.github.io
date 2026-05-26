@@ -114,6 +114,7 @@
                 const response = await fetch('posts.json');
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 const posts = await response.json();
+                posts.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
                 const container = document.getElementById('blog-posts');
                 if (!posts || posts.length === 0) {
                     container.innerHTML = '<div class="no-posts">No posts yet. Check back soon!</div>';
