@@ -1,0 +1,54 @@
+[
+  {
+    "category": "Books",
+    "entries": [
+      {
+        "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+        "url": "https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882",
+        "description": "A classic guide to writing clean, maintainable code. Essential reading for any developer looking to improve their craft.",
+        "status": "read",
+        "rating": 5
+      },
+      {
+        "title": "The Pragmatic Programmer: Your Journey To Mastery",
+        "url": "https://www.amazon.com/Pragmatic-Programmer-Journey-Mastery-Anniversary/dp/0135957052",
+        "description": "Timeless advice and techniques for becoming a better programmer. Covers career development, architectural techniques, and coding practices.",
+        "status": "read",
+        "rating": 5
+      },
+      {
+        "title": "Designing Data-Intensive Applications",
+        "url": "https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321",
+        "description": "Deep dive into the principles and trade-offs of data-intensive systems. Covers databases, streaming, batch processing, and more.",
+        "status": "reading",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "category": "Articles",
+    "entries": [
+      {
+        "title": "Out of the Tar Pit",
+        "url": "https://shaffner.us/cs/papers/tarpit.pdf",
+        "description": "Seminal paper on complexity in software. Argues that state and control are the root of complexity and proposes functional/relational approach.",
+        "status": "read",
+        "rating": 5
+      },
+      {
+        "title": "Notes on Distributed Systems for Young Bloods",
+        "url": "https://www.somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/",
+        "description": "Practical introduction to distributed systems concepts. Covers CAP theorem, consensus, replication, and more with clear examples.",
+        "status": "read",
+        "rating": 4
+      },
+      {
+        "title": "Latency Numbers Every Programmer Should Know",
+        "url": "https://gist.github.com/jboner/2841832",
+        "description": "Classic reference showing the scale of latency in computer systems. Helps build intuition about performance trade-offs.",
+        "status": "read",
+        "rating": 5
+      }
+    ]
+  }
+]
