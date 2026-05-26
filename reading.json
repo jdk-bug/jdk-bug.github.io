@@ -1,0 +1,65 @@
+[
+  {
+    "category": "Books",
+    "entries": [
+      {
+        "title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "description": "A comprehensive guide to building reliable, scalable, and maintainable data systems. Covers databases, streaming, batch processing, and the trade-offs involved in distributed systems design.",
+        "link": "https://dataintensive.net/",
+        "status": "read",
+        "rating": 5
+      },
+      {
+        "title": "The Pragmatic Programmer",
+        "author": "Andrew Hunt & David Thomas",
+        "description": "Classic guide to software craftsmanship. Covers career development, architectural techniques, and practical tips for writing flexible, adaptable code.",
+        "link": "https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/",
+        "status": "read",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "category": "Articles",
+    "entries": [
+      {
+        "title": "Out of the Tar Pit",
+        "author": "Ben Moseley & Peter Marks",
+        "description": "Seminal paper on software complexity, identifying state and control as the root causes of complexity in software systems.",
+        "link": "https://shaffner.us/cs/papers/out-of-the-tar-pit.pdf",
+        "status": "read",
+        "rating": 5
+      },
+      {
+        "title": "No Silver Bullet",
+        "author": "Fred Brooks",
+        "description": "Classic essay arguing that there is no single development that will promise an order of magnitude improvement in productivity within a decade.",
+        "link": "https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD446.html",
+        "status": "read",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "category": "Tools",
+    "entries": [
+      {
+        "title": "Git",
+        "author": "Linus Torvalds et al.",
+        "description": "Distributed version control system that is fast, efficient, and scales from small to very large projects with remarkable ease.",
+        "link": "https://git-scm.com/",
+        "status": "recommended",
+        "rating": 5
+      },
+      {
+        "title": "VS Code",
+        "author": "Microsoft",
+        "description": "Free, open-source code editor with excellent debugging support, integrated Git control, syntax highlighting, intelligent code completion, and snippets.",
+        "link": "https://code.visualstudio.com/",
+        "status": "reading",
+        "rating": 4
+      }
+    ]
+  }
+]
