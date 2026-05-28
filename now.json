@@ -1,0 +1,53 @@
+[
+  {
+    "section": "Working On",
+    "entries": [
+      {
+        "title": "zeroclaw agent development",
+        "description": "Building autonomous AI agents for software development workflows",
+        "status": "active",
+        "updated": "2026-05-26"
+      },
+      {
+        "title": "HTML5 skateboard game enhancements",
+        "description": "Adding trick system, score combos, and mobile controls",
+        "status": "active",
+        "updated": "2026-05-25"
+      }
+    ]
+  },
+  {
+    "section": "Reading",
+    "entries": [
+      {
+        "title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "description": "Deep dive into modern database systems and distributed data processing",
+        "progress": "Chapter 7: Stream Processing",
+        "updated": "2026-05-20"
+      },
+      {
+        "title": "The Pragmatic Programmer",
+        "author": "Andrew Hunt & David Thomas",
+        "description": "Classic guide to software craftsmanship and professional development",
+        "progress": "Chapter 12: Autonomy",
+        "updated": "2026-05-22"
+      }
+    ]
+  },
+  {
+    "section": "Thinking About",
+    "entries": [
+      {
+        "title": "Personal knowledge management systems",
+        "description": "Exploring how to better organize and retrieve information for learning",
+        "updated": "2026-05-24"
+      },
+      {
+        "title": "Sustainable open source maintenance",
+        "description": "Strategies for long-term project health and community engagement",
+        "updated": "2026-05-23"
+      }
+    ]
+  }
+]
