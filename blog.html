@@ -96,6 +96,35 @@
             transform: scale(1.1);
             box-shadow: 0 6px 20px var(--shadow);
         }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+            .post { padding: 1.25rem; margin-bottom: 1rem; }
+            .post h2 { font-size: 1.2rem; }
+            .no-posts { padding: 2rem 1rem; }
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+            }
+            .back-link { margin-bottom: 1.5rem; }
+        }
+
+        @media (max-width: 320px) {
+            .container { padding: 0.75rem; }
+            h1 { font-size: 1.5rem; }
+            .post { padding: 1rem; }
+            .post-meta { font-size: 0.8rem; }
+            .post-content { font-size: 0.9rem; line-height: 1.6; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
