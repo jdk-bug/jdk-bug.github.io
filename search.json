@@ -1,0 +1,40 @@
+{
+  "pages": [
+    {
+      "type": "page",
+      "url": "index.html",
+      "title": "jdk-bug - Homepage",
+      "content": "jdk-bug Developer Open Source Enthusiast homepage projects blog contact",
+      "tags": [
+        "home",
+        "about",
+        "projects",
+        "contact"
+      ]
+    },
+    {
+      "type": "page",
+      "url": "blog.html",
+      "title": "Blog - jdk-bug",
+      "content": "Blog posts articles tutorials project updates technical notes",
+      "tags": [
+        "blog",
+        "posts",
+        "articles"
+      ]
+    }
+  ],
+  "posts": [
+    {
+      "type": "post",
+      "url": "blog.html#welcome",
+      "title": "Welcome to the Blog",
+      "date": "2026-05-18",
+      "content": "First post vanilla JavaScript renders Markdown client-side project updates technical notes tutorials guides",
+      "tags": [
+        "announcement",
+        "meta"
+      ]
+    }
+  ]
+}
