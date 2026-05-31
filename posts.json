@@ -3,6 +3,7 @@
     "slug": "welcome",
     "title": "Welcome to the Blog",
     "date": "2026-05-18",
+    "updated_at": "2026-05-22",
     "tags": ["announcement", "meta"],
     "content": "This is the first post on the new blog section of the jdk-bug homepage.\n\nThe blog is built with vanilla JavaScript and renders Markdown files client-side — no build tools required.\n\n## What to Expect\n\nFuture posts will cover:\n\n- Project updates\n- Technical notes\n- Open source work\n- Tutorials and guides\n\nStay tuned!"
   }
