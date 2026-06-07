@@ -22,6 +22,29 @@
         "posts",
         "articles"
       ]
+    },
+    {
+      "type": "page",
+      "url": "now.html",
+      "title": "Now - jdk-bug",
+      "content": "What I am doing right now current activities projects reading",
+      "tags": [
+        "now",
+        "status",
+        "activities"
+      ]
+    },
+    {
+      "type": "page",
+      "url": "uses.html",
+      "title": "Uses - jdk-bug",
+      "content": "Tools software hardware development setup uses page",
+      "tags": [
+        "uses",
+        "tools",
+        "setup",
+        "gear"
+      ]
     }
   ],
   "posts": [

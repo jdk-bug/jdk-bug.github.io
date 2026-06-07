@@ -1,0 +1,90 @@
+[
+  {
+    "section": "Development",
+    "entries": [
+      {
+        "title": "Visual Studio Code",
+        "description": "Primary editor with custom keybindings and extensions",
+        "link": "https://code.visualstudio.com/"
+      },
+      {
+        "title": "Neovim",
+        "description": "Terminal-based editing for quick edits and remote work",
+        "link": "https://neovim.io/"
+      },
+      {
+        "title": "Git",
+        "description": "Version control, always",
+        "link": "https://git-scm.com/"
+      },
+      {
+        "title": "GitHub CLI",
+        "description": "Managing PRs, issues, and repos from the terminal",
+        "link": "https://cli.github.com/"
+      }
+    ]
+  },
+  {
+    "section": "Languages & Frameworks",
+    "entries": [
+      {
+        "title": "JavaScript / TypeScript",
+        "description": "Web development, both frontend and Node.js backends"
+      },
+      {
+        "title": "Python",
+        "description": "Scripting, automation, and tooling"
+      },
+      {
+        "title": "HTML5 / CSS3",
+        "description": "Static sites and web experiments"
+      }
+    ]
+  },
+  {
+    "section": "Terminal & Shell",
+    "entries": [
+      {
+        "title": "tmux",
+        "description": "Terminal multiplexer for session management",
+        "link": "https://github.com/tmux/tmux"
+      },
+      {
+        "title": "curl",
+        "description": "API testing and debugging from the command line",
+        "link": "https://curl.se/"
+      },
+      {
+        "title": "jq",
+        "description": "JSON processing in the terminal",
+        "link": "https://stedolan.github.io/jq/"
+      }
+    ]
+  },
+  {
+    "section": "Productivity",
+    "entries": [
+      {
+        "title": "GitHub Issues & Projects",
+        "description": "Task tracking and project management"
+      },
+      {
+        "title": "Cron / Scheduled Tasks",
+        "description": "Automated workflows and periodic jobs"
+      }
+    ]
+  },
+  {
+    "section": "Hardware",
+    "entries": [
+      {
+        "title": "Mechanical Keyboard",
+        "description": "Tactile switches for comfortable long coding sessions"
+      },
+      {
+        "title": "Ultrawide Monitor",
+        "description": "Extra horizontal space for side-by-side editing"
+      }
+    ]
+  }
+]
